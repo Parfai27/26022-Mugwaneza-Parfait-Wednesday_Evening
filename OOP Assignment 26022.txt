@@ -1,0 +1,223 @@
+/**
+ * This program demonstrates exception handling in Java for various checked and unchecked exceptions.
+ * Each example simulates a real-world scenario where the exception might occur and provides a
+ * robust mechanism to catch and handle the exception.
+ *
+ * Approach:
+ * - Simulate each exception in a meaningful scenario to understand its occurrence.
+ * - Use `try-catch` blocks to handle exceptions and prevent program crashes.
+ * - Provide meaningful messages in catch blocks to assist in debugging and clarify the handling mechanism.
+ * - Use try-with-resources for proper resource management when dealing with I/O operations.
+ * - Include detailed comments to explain the purpose of each code block.
+ */
+
+import java.io.*;
+import java.sql.*;
+
+public class ExceptionHandlingExamples {
+
+    // Checked Exceptions
+
+    /**
+     * Simulates an IOException by attempting to read a non-existent file.
+     * Demonstrates how to catch and handle the IOException.
+     */
+    public static void ioExceptionExample() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("nonexistent.txt"));
+            System.out.println(reader.readLine());
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("IOException caught: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Simulates a FileNotFoundException by attempting to open a missing file.
+     * Demonstrates how to catch and handle the FileNotFoundException.
+     */
+    public static void fileNotFoundExceptionExample() {
+        try {
+            FileInputStream file = new FileInputStream("missingFile.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println("FileNotFoundException caught: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Simulates an EOFException by reading beyond the content of a file.
+     * Demonstrates how to catch and handle the EOFException.
+     */
+    public static void eofExceptionExample() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("test.dat"))) {
+            while (true) {
+                System.out.println(ois.readObject());
+            }
+        } catch (EOFException e) {
+            System.out.println("EOFException caught: End of file reached.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Exception caught: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Simulates a SQLException by attempting to connect to an invalid database.
+     * Demonstrates how to catch and handle the SQLException.
+     */
+    public static void sqlExceptionExample() {
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/invalidDB", "user", "pass");
+        } catch (SQLException e) {
+            System.out.println("SQLException caught: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Simulates a ClassNotFoundException by attempting to load a non-existent class.
+     * Demonstrates how to catch and handle the ClassNotFoundException.
+     */
+    public static void classNotFoundExceptionExample() {
+        try {
+            Class.forName("NonExistentClass");
+        } catch (ClassNotFoundException e) {
+            System.out.println("ClassNotFoundException caught: " + e.getMessage());
+        }
+    }
+
+    // Unchecked Exceptions
+
+    /**
+     * Simulates an ArithmeticException by performing an illegal division.
+     * Demonstrates how to catch and handle the ArithmeticException.
+     */
+    public static void arithmeticExceptionExample() {
+        try {
+            int result = 10 / 0;
+        } catch (ArithmeticException e) {
+            System.out.println("ArithmeticException caught: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Simulates a NullPointerException by accessing a null reference.
+     * Demonstrates how to catch and handle the NullPointerException.
+     */
+    public static void nullPointerExceptionExample() {
+        try {
+            String str = null;
+            System.out.println(str.length());
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException caught: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Simulates an ArrayIndexOutOfBoundsException by accessing an invalid array index.
+     * Demonstrates how to catch and handle the ArrayIndexOutOfBoundsException.
+     */
+    public static void arrayIndexOutOfBoundsExceptionExample() {
+        try {
+            int[] arr = {1, 2, 3};
+            System.out.println(arr[5]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("ArrayIndexOutOfBoundsException caught: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Simulates a ClassCastException by attempting an invalid type cast.
+     * Demonstrates how to catch and handle the ClassCastException.
+     */
+    public static void classCastExceptionExample() {
+        try {
+            Object obj = new String("Test");
+            Integer num = (Integer) obj;
+        } catch (ClassCastException e) {
+            System.out.println("ClassCastException caught: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Simulates an IllegalArgumentException by passing an invalid argument to a method.
+     * Demonstrates how to catch and handle the IllegalArgumentException.
+     */
+    public static void illegalArgumentExceptionExample() {
+        try {
+            Thread thread = new Thread();
+            thread.setPriority(11); // Invalid priority
+        } catch (IllegalArgumentException e) {
+            System.out.println("IllegalArgumentException caught: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Simulates a NumberFormatException by attempting to convert an invalid string to a number.
+     * Demonstrates how to catch and handle the NumberFormatException.
+     */
+    public static void numberFormatExceptionExample() {
+        try {
+            int number = Integer.parseInt("InvalidNumber");
+        } catch (NumberFormatException e) {
+            System.out.println("NumberFormatException caught: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Simulates a custom exception by throwing and catching a user-defined exception.
+     * Demonstrates how to create and handle custom exceptions in Java.
+     */
+    public static void customExceptionExample() {
+        class CustomException extends Exception {
+            public CustomException(String message) {
+                super(message);
+            }
+        }
+
+        try {
+            throw new CustomException("This is a custom exception!");
+        } catch (CustomException e) {
+            System.out.println("CustomException caught: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        // Checked Exceptions
+        System.out.println("\n--- IOException Example ---");
+        ioExceptionExample();
+
+        System.out.println("\n--- FileNotFoundException Example ---");
+        fileNotFoundExceptionExample();
+
+        System.out.println("\n--- EOFException Example ---");
+        eofExceptionExample();
+
+        System.out.println("\n--- SQLException Example ---");
+        sqlExceptionExample();
+
+        System.out.println("\n--- ClassNotFoundException Example ---");
+        classNotFoundExceptionExample();
+
+        // Unchecked Exceptions
+        System.out.println("\n--- ArithmeticException Example ---");
+        arithmeticExceptionExample();
+
+        System.out.println("\n--- NullPointerException Example ---");
+        nullPointerExceptionExample();
+
+        System.out.println("\n--- ArrayIndexOutOfBoundsException Example ---");
+        arrayIndexOutOfBoundsExceptionExample();
+
+        System.out.println("\n--- ClassCastException Example ---");
+        classCastExceptionExample();
+
+        System.out.println("\n--- IllegalArgumentException Example ---");
+        illegalArgumentExceptionExample();
+
+        System.out.println("\n--- NumberFormatException Example ---");
+        numberFormatExceptionExample();
+
+        // Custom Exception
+        System.out.println("\n--- CustomException Example ---");
+        customExceptionExample();
+    }
+}
